@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DataTable = ({ data }) => {
+function DataTable ({ data }) {
   return (
     <table className="min-w-full bg-white border border-gray-200 mb-4">
       <thead>
