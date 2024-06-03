@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as ss from 'simple-statistics';
 
-function calculateStatistics (data) {
+function calculateStatistics(data) {
   const sporesPerMg = data.map(d => d.sporesPerMg);
   const mean = ss.mean(sporesPerMg);
   const stdDev = ss.standardDeviation(sporesPerMg);
@@ -12,10 +12,16 @@ function calculateStatistics (data) {
     stdDev: stdDev.toFixed(2),
     stdError: stdError.toFixed(2),
   };
-};
+}
 
-export default function Statistics ({ data, onStatsCalculated }) {
+function calculateTTest(data1, data2) {
+  const sporesPerMg1 = data1.map(d => d.sporesPerMg);
+  const sporesPerMg2 = data2.map(d => d.sporesPerMg);
+  const tTestResult = ss.tTestTwoSample(sporesPerMg1, sporesPerMg2, 0);
+  return tTestResult.toFixed(2);
+}
 
+export default function Statistics({ data, onStatsCalculated }) {
   const [stats, setStats] = useState([]);
 
   useEffect(() => {
@@ -27,11 +33,21 @@ export default function Statistics ({ data, onStatsCalculated }) {
       return acc;
     }, {});
 
-    const calculatedStats = Object.keys(groupedData).map(strain => ({
-      strain,
-      ...calculateStatistics(groupedData[strain]),
-    }));
-console.log(calculatedStats)
+    const colData = groupedData["Col"];
+
+    const calculatedStats = Object.keys(groupedData).map(strain => {
+      const strainData = groupedData[strain];
+      const stats = calculateStatistics(strainData);
+      if (strain !== "Col") {
+        stats.tTest = calculateTTest(colData, strainData);
+      }
+      return {
+        strain,
+        ...stats,
+      };
+    });
+
+    console.log(calculatedStats);
     setStats(calculatedStats);
     onStatsCalculated(calculatedStats);
   }, []);
@@ -45,10 +61,11 @@ console.log(calculatedStats)
           <p>Mean: {stat.mean}</p>
           <p>Standard Deviation: {stat.stdDev}</p>
           <p>Standard Error: {stat.stdError}</p>
+          {stat.tTest && (
+            <p>T-Test : {stat.tTest}</p>
+          )}
         </div>
       ))}
     </div>
   );
-};
-
-
+}
