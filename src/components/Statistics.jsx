@@ -18,7 +18,7 @@ function calculateTTest(data1, data2) {
   const sporesPerMg1 = data1.map(d => d.sporesPerMg);
   const sporesPerMg2 = data2.map(d => d.sporesPerMg);
   const tTestResult = ss.tTestTwoSample(sporesPerMg1, sporesPerMg2, 0);
-  return tTestResult.toFixed(2);
+  return tTestResult.toFixed(3);
 }
 
 export default function Statistics({ data, onStatsCalculated }) {
