@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as ss from 'simple-statistics';
 
 function calculateStatistics (data) {
@@ -14,22 +14,30 @@ function calculateStatistics (data) {
   };
 };
 
-export default function Statistics ({ data }) {
-  const groupedData = data.reduce((acc, curr) => {
-    if (!acc[curr.strain]) {
-      acc[curr.strain] = [];
-    }
-    acc[curr.strain].push(curr);
-    return acc;
-  }, {});
+export default function Statistics ({ data, onStatsCalculated }) {
 
-  const stats = Object.keys(groupedData).map(strain => ({
-    strain,
-    ...calculateStatistics(groupedData[strain]),
-  }));
+  const [stats, setStats] = useState([]);
+
+  useEffect(() => {
+    const groupedData = data.reduce((acc, curr) => {
+      if (!acc[curr.strain]) {
+        acc[curr.strain] = [];
+      }
+      acc[curr.strain].push(curr);
+      return acc;
+    }, {});
+
+    const calculatedStats = Object.keys(groupedData).map(strain => ({
+      strain,
+      ...calculateStatistics(groupedData[strain]),
+    }));
+console.log(calculatedStats)
+    setStats(calculatedStats);
+    onStatsCalculated(calculatedStats);
+  }, []);
 
   return (
-    <div className="bg-gray-100 p-4 rounded-lg">
+    <div className="bg-gray-100 p-4 rounded-lg mb-4">
       <p className="text-lg font-semibold">Statistics</p>
       {stats.map(stat => (
         <div key={stat.strain} className="mb-4">
