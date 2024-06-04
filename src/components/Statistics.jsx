@@ -25,7 +25,7 @@ export default function Statistics({ data, onStatsCalculated }) {
   const [stats, setStats] = useState([]);
 
   useEffect(() => {
-    const groupedData = data.reduce((acc, curr) => {
+    const groupedDataPerStrain = data.reduce((acc, curr) => {
       if (!acc[curr.strain]) {
         acc[curr.strain] = [];
       }
@@ -33,10 +33,10 @@ export default function Statistics({ data, onStatsCalculated }) {
       return acc;
     }, {});
 
-    const colData = groupedData["Col"];
+    const colData = groupedDataPerStrain["Col"];
 
-    const calculatedStats = Object.keys(groupedData).map(strain => {
-      const strainData = groupedData[strain];
+    const calculatedStats = Object.keys(groupedDataPerStrain).map(strain => {
+      const strainData = groupedDataPerStrain[strain];
       const stats = calculateStatistics(strainData);
       if (strain !== "Col") {
         stats.tTest = calculateTTest(colData, strainData);
@@ -53,7 +53,6 @@ export default function Statistics({ data, onStatsCalculated }) {
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
-      <p className="text-lg font-semibold mb-2">Statistics</p>
       {stats.map(stat => (
         <div key={stat.strain} className="mb-4">
           <p className="text-gray-700 font-semibold">{stat.strain}</p>

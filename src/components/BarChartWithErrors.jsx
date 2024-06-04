@@ -7,7 +7,7 @@ Chart.register(
   BarWithErrorBar
 );
 
-function BarChart  ({ rawData }) {
+function BarChart({ rawData }) {
   const canvasRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -41,6 +41,7 @@ function BarChart  ({ rawData }) {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'left',
@@ -49,9 +50,9 @@ function BarChart  ({ rawData }) {
           title: {
             display: true,
             text: 'Downy mildew sporulation rates on A. thaliana UPR mutant lines',
-            font: {
-              size: 16,
-            },
+            font: context => ({
+              size: Math.min(16, context.chart.width / 32),
+            }),
           },
         },
         scales: {
@@ -60,9 +61,9 @@ function BarChart  ({ rawData }) {
             title: {
               display: true,
               text: 'Spores/mg fresh weight',
-              font: {
-                size: 16,
-              },
+              font: context => ({
+                size: Math.min(16, context.chart.width / 32),
+              }),
             },
           },
         },
@@ -78,7 +79,7 @@ function BarChart  ({ rawData }) {
     };
   }, [rawData]);
 
-  return <canvas ref={canvasRef} />;
+  return <div className="relative h-96 w-full"><canvas ref={canvasRef} /></div>;
 };
 
 export default BarChart;
