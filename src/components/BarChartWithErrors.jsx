@@ -48,7 +48,7 @@ function BarChart  ({ rawData }) {
           },
           title: {
             display: true,
-            text: 'Test Pathogénique',
+            text: 'Downy mildew sporulation rates on A. thaliana UPR mutant lines',
             font: {
               size: 16,
             },

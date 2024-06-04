@@ -47,17 +47,16 @@ export default function Statistics({ data, onStatsCalculated }) {
       };
     });
 
-    console.log(calculatedStats);
     setStats(calculatedStats);
     onStatsCalculated(calculatedStats);
   }, []);
 
   return (
     <div className="bg-gray-100 p-4 rounded-lg mb-4">
-      <p className="text-lg font-semibold">Statistics</p>
+      <p className="text-lg font-semibold mb-2">Statistics</p>
       {stats.map(stat => (
         <div key={stat.strain} className="mb-4">
-          <p className="text-lg font-semibold">{stat.strain}</p>
+          <p className="text-gray-700 font-semibold">{stat.strain}</p>
           <p>Mean: {stat.mean}</p>
           <p>Standard Deviation: {stat.stdDev}</p>
           <p>Standard Error: {stat.stdError}</p>

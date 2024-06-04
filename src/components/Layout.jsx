@@ -3,13 +3,17 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon, BeakerIcon } from '@heroicons/react/24/outline'
+import { Route, Routes, Link } from "react-router-dom";
+import DataTable from './DataTable.jsx';
+import Statistics from './Statistics.jsx';
+import BarChartWithErrors from './BarChartWithErrors.jsx';
 
 
 const navigation = [
-  { name: 'Table', href: '#', current: true },
-  { name: 'Statistics', href: '#', current: false },
-  { name: 'Graphics', href: '#', current: false },
+  { name: 'Data Table', href: '/datatable', current: true },
+  { name: 'Statistics', href: '/statistics', current: false},
+  { name: 'Graphics', href: '/graphics', current: false},
 ]
 
 function classNames(...classes) {
@@ -28,16 +32,16 @@ export default function Navbar({ children }) {
                   <div className="border-b border-gray-700">
                     <div className="flex h-16 items-center justify-between px-4 sm:px-0">
                       <div className="flex items-center">
-                        <div className="flex-shrink-0">
+                        <div className="flex justify-center items-center">
                           <h1 className='text-white text-xl font-semibold'>BioData Visualizer</h1>
-                
+                          <BeakerIcon className='text-white h-6 w-6 ml-3'/>
                         </div>
                         <div className="hidden md:block">
                           <div className="ml-10 flex items-baseline space-x-4">
                             {navigation.map((item) => (
-                              <a
-                                key={item.name}
-                                href={item.href}
+                              <Link
+                              key={item.name}
+                                to={item.href}
                                 className={classNames(
                                   item.current
                                     ? 'bg-gray-900 text-white'
@@ -47,7 +51,8 @@ export default function Navbar({ children }) {
                                 aria-current={item.current ? 'page' : undefined}
                               >
                                 {item.name}
-                              </a>
+                              </Link>
+                   
                             ))}
                           </div>
                         </div>
@@ -93,7 +98,7 @@ export default function Navbar({ children }) {
           </Disclosure>
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <h1 className="text-3xl font-bold tracking-tight text-white">Table</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-white">Pathogenic Test</h1>
             </div>
           </header>
         </div>
