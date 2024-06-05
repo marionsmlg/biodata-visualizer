@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DataTable from './components/DataTable.jsx';
 import Statistics from './components/Statistics.jsx';
 import BarChartWithErrors from './components/BarChartWithErrors.jsx';
-import data from './data.js';
-import Layout from './components/Layout.jsx'
-import Home from './components/Home.jsx'
-import { Route, Routes } from "react-router-dom";
+import Layout from './components/Layout.jsx';
+import Home from './components/Home.jsx';
+import { Route, Routes } from 'react-router-dom';
 
 function processData(rawData) {
   return rawData.map(row => {
@@ -22,33 +21,29 @@ function processData(rawData) {
   });
 };
 
-
 function App() {
   const [dataProcessed, setDataProcessed] = useState([]);
   const [stats, setStats] = useState([]);
 
-  useEffect(() => {
-    setDataProcessed(processData(data));
-  }, []);
-
+  function handleDataLoaded(jsonData) {
+    const processedData = processData(jsonData);
+    setDataProcessed(processedData);
+  };
 
   function handleStatsCalculated(calculatedStats) {
     setStats(calculatedStats);
   };
+
   return (
     <>
       <Layout>
         <div className="container mx-auto p-4">
-          {dataProcessed.length > 0 && (
-            <>
-              <Routes>
-                <Route path='/' element={<Home />} />
-                <Route path='/datatable' element={<DataTable data={dataProcessed} />} />
-                <Route path='/statistics' element={<Statistics data={dataProcessed} onStatsCalculated={handleStatsCalculated} />} />
-                <Route path='/graphics' element={<BarChartWithErrors rawData={stats} />} />
-              </Routes>
-            </>
-          )}
+          <Routes>
+            <Route path="/" element={<Home onDataLoaded={handleDataLoaded} />} />
+            <Route path="/datatable" element={<DataTable data={dataProcessed} />} />
+            <Route path="/statistics" element={<Statistics data={dataProcessed} onStatsCalculated={handleStatsCalculated} />} />
+            <Route path="/graphics" element={<BarChartWithErrors rawData={stats} />} />
+          </Routes>
         </div>
       </Layout>
     </>
